@@ -7,7 +7,6 @@
 # Início do Manifesto
 apiVersion: v1
 items:
-
   #----------------------------------------#
   # KIND: NetworkPolicy
   - apiVersion: networking.k8s.io/v1
@@ -255,14 +254,14 @@ items:
               resources: {}
               volumeMounts:
                 - mountPath: /data/db
-                  name: db-hostpath0
+                  name: dbdata
           restartPolicy: Always
           volumes:
             - hostPath:
-                path: /home/thiago/my5gc-dockerhub/dbdata
-              name: db-hostpath0
+                path: /home/thiago/my5gc-k8s/dbdata
+              name: dbdata
     status: {}
-    
+
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -291,19 +290,19 @@ items:
               ports:
                 - containerPort: 29518
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/amfcfg.conf
-                  name: my5gcore-amf-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-amf-hostpath1
+          #              volumeMounts:
+          #                - mountPath: /my5Gcore/config/amfcfg.conf
+          #                  name: my5gcore-amf-hostpath0
+          #                - mountPath: /my5Gcore/config/free5GC.conf
+          #                  name: my5gcore-amf-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /amfcfg.conf
-              name: my5gcore-amf-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-amf-hostpath1
+    #          volumes:
+    #            - hostPath:
+    #                path: /amfcfg.conf
+    #              name: my5gcore-amf-hostpath0
+    #            - hostPath:
+    #                path: /my5Gcore.conf
+    #              name: my5gcore-amf-hostpath1
     status: {}
 
   - apiVersion: apps/v1
@@ -334,19 +333,19 @@ items:
               ports:
                 - containerPort: 29509
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/ausfcfg.conf
-                  name: my5gcore-ausf-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-ausf-hostpath1
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/ausfcfg.conf
+              #     name: my5gcore-ausf-hostpath0
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-ausf-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /ausfcfg.conf
-              name: my5gcore-ausf-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-ausf-hostpath1
+          # volumes:
+          #   - hostPath:
+          #       path: /ausfcfg.conf
+          #     name: my5gcore-ausf-hostpath0
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-ausf-hostpath1
     status: {}
 
   - apiVersion: apps/v1
@@ -385,24 +384,24 @@ items:
                 capabilities:
                   add:
                     - NET_ADMIN
-              volumeMounts:
-                - mountPath: /my5Gcore/config/n3iwfcfg.conf
-                  name: my5gcore-n3iwf-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-n3iwf-hostpath1
-                - mountPath: /my5Gcore/n3iwf/n3iwf-ipsec.sh
-                  name: my5gcore-n3iwf-hostpath2
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/n3iwfcfg.conf
+              #     name: my5gcore-n3iwf-hostpath0
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-n3iwf-hostpath1
+              #   - mountPath: /my5Gcore/n3iwf/n3iwf-ipsec.sh
+              #     name: my5gcore-n3iwf-hostpath2
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /n3iwfcfg.conf
-              name: my5gcore-n3iwf-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-n3iwf-hostpath1
-            - hostPath:
-                path: /n3iwf-ipsec.sh
-              name: my5gcore-n3iwf-hostpath2
+          # volumes:
+          #   - hostPath:
+          #       path: /n3iwfcfg.conf
+          #     name: my5gcore-n3iwf-hostpath0
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-n3iwf-hostpath1
+          #   - hostPath:
+          #       path: /n3iwf-ipsec.sh
+          #     name: my5gcore-n3iwf-hostpath2
     status: {}
 
   - apiVersion: apps/v1
@@ -434,19 +433,19 @@ items:
               ports:
                 - containerPort: 29510
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/nrfcfg.conf
-                  name: my5gcore-nrf-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-nrf-hostpath1
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/nrfcfg.conf
+              #     name: my5gcore-nrf-hostpath0
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-nrf-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /nrfcfg.conf
-              name: my5gcore-nrf-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-nrf-hostpath1
+          # volumes:
+          #   - hostPath:
+          #       path: /nrfcfg.conf
+          #     name: my5gcore-nrf-hostpath0
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-nrf-hostpath1
     status: {}
 
   - apiVersion: apps/v1
@@ -477,19 +476,19 @@ items:
               ports:
                 - containerPort: 29531
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/nssfcfg.conf
-                  name: my5gcore-nssf-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-nssf-hostpath1
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/nssfcfg.conf
+              #     name: my5gcore-nssf-hostpath0
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-nssf-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /nssfcfg.conf
-              name: my5gcore-nssf-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-nssf-hostpath1
+          # volumes:
+          #   - hostPath:
+          #       path: /nssfcfg.conf
+          #     name: my5gcore-nssf-hostpath0
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-nssf-hostpath1
     status: {}
 
   - apiVersion: apps/v1
@@ -520,19 +519,19 @@ items:
               ports:
                 - containerPort: 29507
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/pcfcfg.conf
-                  name: my5gcore-pcf-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-pcf-hostpath1
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/pcfcfg.conf
+              #     name: my5gcore-pcf-hostpath0
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-pcf-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /pcfcfg.conf
-              name: my5gcore-pcf-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-pcf-hostpath1
+          # volumes:
+          #   - hostPath:
+          #       path: /pcfcfg.conf
+          #     name: my5gcore-pcf-hostpath0
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-pcf-hostpath1
     status: {}
 
   - apiVersion: apps/v1
@@ -567,24 +566,24 @@ items:
                 - containerPort: 8805
                   protocol: UDP
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/smfcfg.conf
-                  name: my5gcore-smf-hostpath0
-                - mountPath: /my5Gcore/config/uerouting.yaml
-                  name: my5gcore-smf-hostpath1
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-smf-hostpath2
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/smfcfg.conf
+              #     name: my5gcore-smf-hostpath0
+              #   - mountPath: /my5Gcore/config/uerouting.yaml
+              #     name: my5gcore-smf-hostpath1
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-smf-hostpath2
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /smfcfg.conf
-              name: my5gcore-smf-hostpath0
-            - hostPath:
-                path: /uerouting.yaml
-              name: my5gcore-smf-hostpath1
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-smf-hostpath2
+          # volumes:
+          #   - hostPath:
+          #       path: /smfcfg.conf
+          #     name: my5gcore-smf-hostpath0
+          #   - hostPath:
+          #       path: /uerouting.yaml
+          #     name: my5gcore-smf-hostpath1
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-smf-hostpath2
     status: {}
 
   - apiVersion: apps/v1
@@ -615,19 +614,19 @@ items:
               ports:
                 - containerPort: 29503
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/udmcfg.conf
-                  name: my5gcore-udm-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-udm-hostpath1
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/udmcfg.conf
+              #     name: my5gcore-udm-hostpath0
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-udm-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /udmcfg.conf
-              name: my5gcore-udm-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-udm-hostpath1
+          # volumes:
+          #   - hostPath:
+          #       path: /udmcfg.conf
+          #     name: my5gcore-udm-hostpath0
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-udm-hostpath1
     status: {}
 
   - apiVersion: apps/v1
@@ -659,19 +658,19 @@ items:
               ports:
                 - containerPort: 29504
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/udrcfg.conf
-                  name: my5gcore-udr-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-udr-hostpath1
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/udrcfg.conf
+              #     name: my5gcore-udr-hostpath0
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-udr-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /udrcfg.conf
-              name: my5gcore-udr-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-udr-hostpath1
+          # volumes:
+          #   - hostPath:
+          #       path: /udrcfg.conf
+          #     name: my5gcore-udr-hostpath0
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-udr-hostpath1
     status: {}
 
   - apiVersion: apps/v1
@@ -707,19 +706,19 @@ items:
                 capabilities:
                   add:
                     - ALL
-              volumeMounts:
-                - mountPath: /my5Gcore/config/upfcfg.yaml
-                  name: my5gcore-upf1-hostpath0
-                - mountPath: /my5Gcore/free5gc-upfd/router-upf.sh
-                  name: my5gcore-upf1-hostpath1
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/upfcfg.yaml
+              #     name: my5gcore-upf1-hostpath0
+              #   - mountPath: /my5Gcore/free5gc-upfd/router-upf.sh
+              #     name: my5gcore-upf1-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /upfcfg.yaml
-              name: my5gcore-upf1-hostpath0
-            - hostPath:
-                path: /router-upf-lorawan.sh
-              name: my5gcore-upf1-hostpath1
+          # volumes:
+          #   - hostPath:
+          #       path: /upfcfg.yaml
+          #     name: my5gcore-upf1-hostpath0
+          #   - hostPath:
+          #       path: /router-upf-lorawan.sh
+          #     name: my5gcore-upf1-hostpath1
     status: {}
 
   - apiVersion: apps/v1
@@ -752,20 +751,20 @@ items:
               ports:
                 - containerPort: 5000
               resources: {}
-              volumeMounts:
-                - mountPath: /my5Gcore/config/webuicfg.conf
-                  name: my5gcore-webui-hostpath0
-                - mountPath: /my5Gcore/config/free5GC.conf
-                  name: my5gcore-webui-hostpath1
+              # volumeMounts:
+              #   - mountPath: /my5Gcore/config/webuicfg.conf
+              #     name: my5gcore-webui-hostpath0
+              #   - mountPath: /my5Gcore/config/free5GC.conf
+              #     name: my5gcore-webui-hostpath1
           restartPolicy: Always
-          volumes:
-            - hostPath:
-                path: /webuicfg.conf
-              name: my5gcore-webui-hostpath0
-            - hostPath:
-                path: /my5Gcore.conf
-              name: my5gcore-webui-hostpath1
+          # volumes:
+          #   - hostPath:
+          #       path: /webuicfg.conf
+          #     name: my5gcore-webui-hostpath0
+          #   - hostPath:
+          #       path: /my5Gcore.conf
+          #     name: my5gcore-webui-hostpath1
     status: {}
-    
+
 kind: List
 metadata: {}
