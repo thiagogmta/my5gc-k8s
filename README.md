@@ -22,7 +22,7 @@ Os arquivos deste repositório consistem em:
 
 3. k8s.sh
 
-   1. Script shell para finalizar todos os deployments, services e pods
+   1. Script shell para finalizar todos os deployments, services, pods e networkpolices
 
    2. para executa-lo basta:
 
