@@ -154,9 +154,52 @@ $ sudo docker-compose down
 $ kubectl create -f my5gc-k8s.yaml
 ```
 
+O cluster está sendo testardo em dois ambientes:
 
+- Ambiente 1 - Cluster RNP
+- Ambiente 2 - Cluster Local via Minikube
 
+A seguir são executados três comandos para verificar os pods, deployments e services do Cluster. O terminal da esquerda mostra o retorno do Cluster da RNP e o terminal da direita é referente ao Cluster Local.
 
+1. **Verificando os Pods**
+
+```bash
+$ kubectl get pods
+```
+
+![pods](img/pod.png)
+
+Retorno dos Pods
+
+2. **Verificando os Deployments**
+
+```bash
+$ kubectl get deployments
+```
+
+![pods](img/deploy.png)
+
+Retorno dos Deployments
+
+3. **Verificando os Services**
+
+```bash
+$ kubectl get svc
+```
+
+![pods](img/svc.png)
+
+Retorno dos Services
+
+### Tratamento de Erros
+
+Atualmente as funções a seguir estão apresentando erro em sua execução no cluster:
+
+- n3iwf
+- smf
+- upf
+
+A seguir o retorno do comando **describe pod** para a função **upf**.
 
 ```bash
 $ kubectl describe pod my5gcore-upf-5b74bb6885-fkxpm
