@@ -154,3 +154,75 @@ $ sudo docker-compose down
 $ kubectl create -f my5gc-k8s.yaml
 ```
 
+
+
+
+
+```bash
+$ kubectl describe pod my5gcore-upf-5b74bb6885-fkxpm
+
+Name:         my5gcore-upf-5b74bb6885-fkxpm
+Namespace:    default
+Priority:     0
+Node:         minikube/192.168.99.102
+Start Time:   Fri, 23 Apr 2021 09:00:17 -0300
+Labels:       app=my5gcore-upf
+              io.kompose.network/5gcorenetwork=true
+              io.kompose.network/lorawan=true
+              pod-template-hash=5b74bb6885
+Annotations:  <none>
+Status:       Running
+IP:           172.17.0.20
+IPs:
+  IP:           172.17.0.20
+Controlled By:  ReplicaSet/my5gcore-upf-5b74bb6885
+Containers:
+  upf:
+    Container ID:  docker://067b596eccfb7afb1995888ae070cc8854cc180639fd317eef7159ffa143fa21
+    Image:         bsconsul/free5gc-upf:hardCfg
+    Image ID:      docker-pullable://bsconsul/free5gc-upf@sha256:662232a5a001b1f47a04c1da984bb8e543e1c2f6cc8aa91588bf6e947ed7b73c
+    Ports:         2152/UDP, 8805/UDP
+    Host Ports:    0/UDP, 0/UDP
+    Args:
+      ./upfd
+      ./upfcfg
+      ../config/upfcfg.yaml
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       ContainerCannotRun
+      Message:      OCI runtime create failed: container_linux.go:370: starting container process caused: exec: "./upfd": stat ./upfd: no such file or directory: unknown
+      Exit Code:    127
+      Started:      Fri, 23 Apr 2021 09:11:14 -0300
+      Finished:     Fri, 23 Apr 2021 09:11:14 -0300
+    Ready:          False
+    Restart Count:  7
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-9pj9g (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  default-token-9pj9g:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-9pj9g
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                 From               Message
+  ----     ------     ----                ----               -------
+  Normal   Scheduled  16m                 default-scheduler  Successfully assigned default/my5gcore-upf-5b74bb6885-fkxpm to minikube
+  Normal   Pulled     14m (x5 over 16m)   kubelet            Container image "bsconsul/free5gc-upf:hardCfg" already present on machine
+  Normal   Created    14m (x5 over 16m)   kubelet            Created container upf
+  Warning  Failed     14m (x5 over 16m)   kubelet            Error: failed to start container "upf": Error response from daemon: OCI runtime create failed: container_linux.go:370: starting container process caused: exec: "./upfd": stat ./upfd: no such file or directory: unknown
+  Warning  BackOff    51s (x68 over 15m)  kubelet            Back-off restarting failed container
+```
+
+Retorno do comando kubectl describe pod para a função upf

@@ -285,7 +285,7 @@ items:
               env:
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_amf
+              image: bsconsul/free5gc-amf:hardCfg
               name: amf
               ports:
                 - containerPort: 29518
@@ -328,7 +328,7 @@ items:
               env:
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_ausf
+              image: bsconsul/free5gc-ausf:hardCfg
               name: ausf
               ports:
                 - containerPort: 29509
@@ -371,7 +371,7 @@ items:
               env:
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_n3iwf
+              image: bsconsul/free5gc-n3iwf:hardCfg
               name: n3iwf
               ports:
                 - containerPort: 20000
@@ -428,7 +428,7 @@ items:
                 - name: DB_URI
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_nrf
+              image: bsconsul/free5gc-nrf:hardCfg
               name: nrf
               ports:
                 - containerPort: 29510
@@ -471,7 +471,7 @@ items:
               env:
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_nssf
+              image: bsconsul/free5gc-nssf:hardCfg
               name: nssf
               ports:
                 - containerPort: 29531
@@ -514,7 +514,7 @@ items:
               env:
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_pcf
+              image: bsconsul/free5gc-pcf:hardCfg
               name: pcf
               ports:
                 - containerPort: 29507
@@ -559,7 +559,7 @@ items:
               env:
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_smf
+              image: bsconsul/free5gc-smf:hardCfg
               name: smf
               ports:
                 - containerPort: 29502
@@ -609,7 +609,7 @@ items:
               env:
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_udm
+              image: bsconsul/free5gc-udm:hardCfg
               name: udm
               ports:
                 - containerPort: 29503
@@ -653,7 +653,8 @@ items:
                 - name: DB_URI
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/nf_udr
+              image: bsconsul/free5gc-udr:hardCfg
+              #image: free5gc/udr
               name: udr
               ports:
                 - containerPort: 29504
@@ -676,25 +677,30 @@ items:
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: my5gcore-upf1
+      name: my5gcore-upf
     spec:
       replicas: 1
       selector:
         matchLabels:
-          app: my5gcore-upf1
+          app: my5gcore-upf
       template:
         metadata:
           labels:
             io.kompose.network/5gcorenetwork: "true"
             io.kompose.network/lorawan: "true"
-            app: my5gcore-upf1
+            app: my5gcore-upf
         spec:
           containers:
             - args:
-                - bash
-                - -c
-                - ./router-upf.sh && ./free5gc-upfd -f ../config/upfcfg.yaml
-              image: thiagogmta/nf_upf
+                # - bash
+                # - -c
+                # - ./router-upf.sh && ./free5gc-upfd -f ../config/upfcfg.yaml
+                
+                - ./upfd
+                - ./upfcfg
+                - ../config/upfcfg.yaml
+              #image: thiagogmta/nf_upf
+              image: bsconsul/free5gc-upf:hardCfg
               name: upf
               ports:
                 - containerPort: 2152
@@ -746,7 +752,8 @@ items:
               env:
                 - name: GIN_MODE
                   value: release
-              image: thiagogmta/webui
+              #image: thiagogmta/webui    
+              image: bsconsul/free5gc-webui:hardCfg
               name: webui
               ports:
                 - containerPort: 5000
