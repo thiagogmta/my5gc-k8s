@@ -2,35 +2,26 @@
 
 O objetivo desse repositório é realizar uma orquestração das funções do núcleo do 5G através do Kubernetes. **Este projeto está em andamento**.
 
-A base para esse repositório consiste no my5gCore-compose que por sua vez é um fork do [Free5gC Compose](https://github.com/free5gc/free5gc-compose). O my5gCore-Compose consiste no núcleo do 5G onde cada função opera em um container. Esses containers são automatizados via compose.
+A base para esse repositório consiste no projeto [my5gCore-compose](https://github.com/my5G/my5Gcore-compose) que por sua vez é um fork do [Free5gC Compose](https://github.com/free5gc/free5gc-compose). O my5gCore-Compose consiste no núcleo do 5G onde cada função opera em um container. Esses containers são automatizados via compose. Esta documentação está organizarda de acordo com os índices a seguir:
 
-O manifesto (my5gc-k8s.yaml) foi criado através do kompose baseando-se no arquivo docker-compose.yaml. O arquivo, produto deste comando tem sido corrigido e melhorado para que opere de forma apropriada. Comando para criação do manifesto:
+1. Prerequisitos
+2. Executando o My5GCore via Compose
+3. Preparando os arquivos para o Cluster
+4. Executando o My5GCore no Kubernetes
 
-```bash
-$ kompose convert -o my5gc-k8s.yaml --volumes hostPath
-```
+Par esse repositório foi utilizada a seguinte infraestrutura (não representa os requisitos mínimos):
 
-Os arquivos deste repositório consistem em:
+- Notebook: Core i5 2.5GHz 7th Gen; 16Gb de Memória; 320 SSD
 
-1. docker-compose.yaml
+- Linux Ubuntu 20.04 64 bits; Kernel: 5.4.0-72-generic
 
-   1. Arquivo responsável por executar o núcleo do 5G via compose.
+## 1. Prerequisitos
 
-2. my5gc-k8s.yaml
+> Nessa sessão são listados os prerequisitos e aplicações necessárias
+>
+> Obs.: Para executar apenas o experimento da sessão 4 desse repositório  faz-se necessário apenas a instalação do Virtualbox e Minikube.
 
-   1. Manifesto do Kubernetes onde residem os deployments e services para o núcleo do 5G.
-
-3. k8s.sh
-
-   1. Script shell para finalizar todos os deployments, services, pods e networkpolices
-
-   2. para executa-lo basta:
-
-   3. ```bash
-      $ ./sk8.sh
-      ```
-
-## Prerequisitos
+### 1.1. Kernel 5.0.0-23-generic ou superior
 
 Certifique-se de estar utilizando o kernel 5.0.0-23-generic ou superior. Você pode verificar com:
 
@@ -38,9 +29,9 @@ Certifique-se de estar utilizando o kernel 5.0.0-23-generic ou superior. Você p
 $ uname -r
 ```
 
-### 1. GTP5G Kernel Module
+### 1.2. GTP5G Kernel Module
 
-Por conta das exigências do UPF faz-se necessário a instalação do gtp5g:
+Por conta das exigências da função UPF faz-se necessário a instalação do gtp5g:
 
 ```bash
 $ git clone https://github.com/PrinzOwO/gtp5g.git
@@ -49,7 +40,9 @@ $ make
 $ sudo make install
 ```
 
-### 2. Docker
+### 1.3. Docker
+
+Docker será nossa plataforma para operar os conteineres.
 
 Instalação de pacotes pré-requisitos
 
@@ -87,7 +80,7 @@ Para verificar o status
 $ sudo systemctl status docker
 ```
 
-### 3. Docker Compose
+### 1.4. Docker Compose
 
 O docker compose permite gerir a inicialização e finalização de diversos containers simultaneamente. Seu funcionamento se dá através de arquivos YAML que guardam as definições dos containers.
 
@@ -109,17 +102,91 @@ Para verificar se tudo ocorreu bem execute
 $ docker-compose --version
 ```
 
-## 1. Executando o my5gc via docker-compose
+### 1.5. Minikube
 
-Como precisamos criar uma interface de tunel, necessitamos criar um containger com permissões de root.
+O minikube é uma ferramenta capaz de criar um cluster local através de alguma VM como Virtualbox ou Vmware. Através do minikube podemos realizar vários experimentos kubernetes em um ambiente local.
 
-Dowload dos arquivos do núcleo:
+```shell
+$ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+$ sudo dpkg -i minikube_latest_amd64.deb
+```
+
+**Comandos básicos do Minikube:**
+
+```bash
+$ minikube start
+```
+
+Inicia o cluster. Na primeira execução esse processo será mais demorado pois o minikube irá fazer o download dos binários, criação da VM, configurações necessárias e instalação.
+
+```bash
+$ minikube stop
+```
+
+Finaliza a execução do minikube
+
+```bash
+$ minikube dashboard
+```
+
+Abre um painel web onde podemos visualizar as características do cluster como pods em operação e services.
+
+```bash
+$ minikube delete
+```
+
+Apaga o cluster
+
+### 1.6. Kubectl
+
+O Kubectl é uma interface em linha de comandos que possibilita a execução de comandos no cluster.
+
+```bash
+$ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+$ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+
+**Comandos básicos do kubeclt:**
+
+```bash
+$ kubectl get pods # lista todos os pods
+$ kubectl get services # lista todos os services
+$ kubectl get deployments # lista todos os deployments
+$ kubectl get nodes # lista todos os nodes
+$ kubectl create -f <manifesto.yaml> # realiza o deploy de um arquivo manifesto
+$ kubectl delete -f <manifesto.yaml> # remove o deploy de um arquivo manifesto
+$ kubectl delete -- all pods # Apaga todos os pods
+$ kubectl delete --all services # Apaga todos os services
+$ kubectl delete --all nodes # Apaga todos os nodes
+$ kubectl delete --all deployments # Apaga todos os deployments
+$ kubectl delete pod <pod_name>  # Apaga apenas um pode específico
+```
+
+### 1.6. Kompose
+
+O kompose é uma ferramenta que auxilia no processo de criação de arquivos manifestos baseado em arquivos do Docker Compose. Em teoria o Kompose realiza a conversão do arquivo docker-compose.yaml para um manifesto kubernetes. Esse processo de conversão nem sempre é preciso, entretanto é útil como ponto de partida.
+
+```bash
+$ curl -L https://github.com/kubernetes/kompose/releases/download/v1.22.0/kompose-linux-amd64 -o kompose
+```
+
+Para realizar a conversão, basta acessar o diretório que contem o arquivo docker-compose.yaml e executar o comando:
+
+```bash
+$ kompose convert
+```
+
+## 2. Experimento 1: Executando o my5gc via docker-compose
+
+Esse experimento consiste em executar o my5gc-compse através do docker-compose.
+
+Dowload desse repositório:
 
 ```bash
 $ git clone https://github.com/thiagogmta/my5gc-k8s.git
 ```
 
-Executando os containers através do docker-compose
+Como precisamos criar uma interface de tunel, necessitamos criar um containger com permissões de root.
 
 ```bash
 $ cd my5gc-k8s
@@ -148,7 +215,49 @@ Para finalizar:
 $ sudo docker-compose down
 ```
 
-## 2. Executando o My5GCore com o kubernetes
+## 3. Preparando os arquivos para o Cluster
+
+Essa sessão relata o processo de preparação dos arquivos do repositório my5gc-compose para a realização do deploy no cluster. Portanto essa sessão é meramente explicativa não sendo necessária sua replicação.
+
+
+
+## 4. Experimento 2: Executando o My5GCore via o kubernetes
+
+O manifesto (my5gc-k8s.yaml) foi criado através do kompose baseando-se no arquivo docker-compose.yaml. O arquivo, produto deste comando tem sido corrigido e melhorado para que opere de forma apropriada. Comando para criação do manifesto:
+
+```bash
+$ kompose convert -o my5gc-k8s.yaml --volumes hostPath
+```
+
+Os arquivos deste repositório consistem em:
+
+1. docker-compose.yaml
+
+   1. Arquivo responsável por executar o núcleo do 5G via compose.
+
+2. my5gc-k8s.yaml
+
+   1. Manifesto do Kubernetes onde residem os deployments e services para o núcleo do 5G.
+
+3. k8s.sh
+
+   1. Script shell para finalizar todos os deployments, services, pods e networkpolices
+
+   2. para executa-lo basta:
+
+   3. ```bash
+      $ ./sk8.sh
+      ```
+
+## 
+
+
+
+
+
+
+
+
 
 ```bash
 $ kubectl create -f my5gc-k8s.yaml
